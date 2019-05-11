@@ -10,30 +10,40 @@
 <body>
   <div class="container">
     <div class="error-container"></div>
-    <h1>My Bookmarks</h1>
+    
+    <header role="banner">
+      <span id="header">
+        My Bookmarks
+      </span>
+    </header>
 
-    <form id="js-add-bookmark-form">
-    </form>
-
-    <div>
+    <nav role="navigation">
+      <span id="rating">
         Minimum Rating
-        <select>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-      </div>
+      <select class="js-minimumRating">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </span>
+    </nav>
 
-    <ul class="bookmark-list js-bookmark-list">
-    </ul>
+    <main role="main">
+      <form id="js-add-bookmark-form">
+      </form>
+
+      <ul class="bookmark-list js-bookmark-list">
+      </ul>
+    </main>
 
   </div>
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="scripts/api.js"></script>
   <script type="text/javascript" src="scripts/store.js"></script>
+  <script type="text/javascript" src="scripts/render.js"></script>
   <script type="text/javascript" src="scripts/bookmark.js"></script>
   <script type="text/javascript" src="scripts/index.js"></script>
 

@@ -11,7 +11,7 @@ $(document).ready(function() {
       bookmarks.forEach((bookmark) => {
         store.addBookmark(bookmark);
       });
-      bookmarkList.render();
+      render.render();
     })
     .catch(err => console.log(err.message))
 });

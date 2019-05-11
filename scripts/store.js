@@ -3,6 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 const store = (function(){
   let addNewBookmark = false;
+  let minimumRating = 1;
 
   const setError = function(error) {
     this.error = error;
@@ -34,6 +35,7 @@ const store = (function(){
 
   return {
     addNewBookmark,
+    minimumRating,
     bookmarks: [],
     error: null,
     addBookmark,
