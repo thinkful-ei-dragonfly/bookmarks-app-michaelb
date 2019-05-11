@@ -11,7 +11,9 @@
   <div class="container">
     <div class="error-container"></div>
     <h1>My Bookmarks</h1>
-    <form id="js-bookmark-list-form">
+
+    <form id="js-add-bookmark-form">
+    </form>
 
     <div>
         Minimum Rating
@@ -24,29 +26,6 @@
           </select>
       </div>
 
-      <h2>Add a Bookmark:</h2>
-      <p><label for="bookmark-list-title">Title</label>
-      <input type="text" name="bookmark-list-title" class="js-bookmark-list-title" placeholder="Google" required>
-      <label for="bookmark-list-url">URL</label>
-      <input type="url" name="bookmark-list-url" class="js-bookmark-list-url" placeholder="http://google.com" required></p>
-      <p><textarea rows="4" cols="50" name="bookmark-list-desc" class="js-bookmark-list-desc" placeholder="Enter description here..."></textarea></p>
-      Select Rating:
-      <input type="radio" name="js-bookmark-list-rating" value="1">1</input>
-      <input type="radio" name="js-bookmark-list-rating" value="2">2</input>
-      <input type="radio" name="js-bookmark-list-rating" value="3">3</input>
-      <input type="radio" name="js-bookmark-list-rating" value="4">4</input>
-      <input type="radio" name="js-bookmark-list-rating" value="5">5</input>
-      <p><button type="submit">Add Bookmark</button></p>
-      <!-- <div>
-        <input type="checkbox" id="filter-checked" class="filter-checked js-filter-checked" />
-        <label for="filter-checked">Hide Checked</label>
-      </div> -->
-      <!-- <div>
-        <label for="js-bookmark-list-search-entry">Search:</label>
-        <input type="text" name="bookmark-list-search-entry" class="js-bookmark-list-search-entry" />
-      </div> -->
-
-    </form>
     <ul class="bookmark-list js-bookmark-list">
     </ul>
 

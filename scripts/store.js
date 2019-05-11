@@ -1,7 +1,9 @@
-'use strict'
+'use strict';
 
 // eslint-disable-next-line no-unused-vars
 const store = (function(){
+  let addNewBookmark = false;
+
   const setError = function(error) {
     this.error = error;
   };
@@ -25,32 +27,20 @@ const store = (function(){
     Object.assign(bookmark, newData);
   };
 
-  const toggleCheckedFilter = function() {
-    this.hideCheckedBookmarks = !this.hideCheckedBookmarks;
-  };
-
   const setBookmarkIsEditing = function(id, isEditing) {
     const bookmark = this.findById(id);
     bookmark.editing = isEditing;
   };
 
-  const setSearchTerm = function(term) {
-    this.searchTerm = term;
-  };
-
   return {
+    addNewBookmark,
     bookmarks: [],
     error: null,
-    hideCheckedBookmarks: false,
-    searchTerm: '',
-
     addBookmark,
     setError,
     findById,
     findAndDelete,
     findAndUpdate,
-    toggleCheckedFilter,
-    setSearchTerm,
     setBookmarkIsEditing,
   };
   

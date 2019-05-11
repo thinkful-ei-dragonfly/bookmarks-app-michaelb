@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /* global store, api, $ */
 
@@ -14,12 +14,33 @@ const bookmarkList = (function(){
     `;
   }
 
-  function generateBookmarkElement(bookmark) {
-    // const checkedClass = bookmark.editing ? 'bookmark__checked' : '';
-    // const editBtnStatus = bookmark.editing ? 'disabled' : '';
+  function addNewBookmarkForm() {
+    if (store.addNewBookmark) {
+      return `
+      <h2>Add a Bookmark:</h2>
+      <p><label for="bookmark-list-title">Title</label>
+      <input type="text" name="bookmark-list-title" class="js-bookmark-list-title" placeholder="Google" required>
+      <label for="bookmark-list-url">URL</label>
+      <input type="url" name="bookmark-list-url" class="js-bookmark-list-url" placeholder="http://google.com" required></p>
+      <p><textarea rows="4" cols="50" name="bookmark-list-desc" class="js-bookmark-list-desc" placeholder="Enter description here..."></textarea></p>
+      Select Rating:
+      <input type="radio" name="js-bookmark-list-rating" value="1">1</input>
+      <input type="radio" name="js-bookmark-list-rating" value="2">2</input>
+      <input type="radio" name="js-bookmark-list-rating" value="3">3</input>
+      <input type="radio" name="js-bookmark-list-rating" value="4">4</input>
+      <input type="radio" name="js-bookmark-list-rating" value="5">5</input>
+      <p><button type="submit">Submit</button></p>`;
+    } else {
+      return `
+      <button class="js-add-bookmark">
+        <span class="button-label">Add Bookmark</span>
+      </button>`;
+    }
+  }
 
-    // let bookmarkTitle = `<span class="bookmark-title ${checkedClass}">${bookmark.title}</span>`;
-    let bookmarkHTML = `<a href="${bookmark.url}" target="_blank" alt="${bookmark.desc}"><span class="bookmark-title">${bookmark.title}</span></a>`;
+  function generateBookmarkElement(bookmark) {
+    let bookmarkHTML = `<a href="${bookmark.url}" target="_blank" alt="${bookmark.desc}"><span class="bookmark-title">${bookmark.title}</span></a>`;`<a href="${bookmark.url}" target="_blank" alt="${bookmark.desc}"><span class="bookmark-title">${bookmark.title}</span></a>`;
+
     if (bookmark.expanded) {
       bookmarkHTML = `
         <a href="${bookmark.url}" target="_blank" alt="${bookmark.desc}"><span class="bookmark-title">${bookmark.title}</span></a>
@@ -38,34 +59,27 @@ const bookmarkList = (function(){
         </button><br>`;
     }
     let bookmarkRatingStars = '';
-    if (!bookmark.desc) { bookmark.desc = "" }
+    if (!bookmark.desc) { bookmark.desc = ''; }
     if (bookmark.editing) {
       bookmarkHTML = 
-        // `
-        // <form class="js-edit-bookmark">
-        //   <input class="bookmark-title" type="text" value="${bookmark.title}" />
-        // </form>
-        // <div class="bookmark-edit-controls">
-        // <button class="bookmark-edit-submit js-bookmark-edit-submit">
-        //   <span class="button-label">Submit</span>
-        // </button>`
-
         `<div class="bookmark-edit-controls">
           <form class="js-edit-bookmark">
             <input class="js-bookmark-edit-title" type="text" value="${bookmark.title}" required/>
             <input type="url" name="bookmark-edit-url" class="js-bookmark-edit-url" value="${bookmark.url}" required></input>
-            <p><textarea rows="4" cols="50" name="bookmark-edit-desc" class="js-bookmark-edit-desc">${bookmark.desc}</textarea></p>
-            <input type="radio" name="js-bookmark-edit-rating" value="1">1</input>
-            <input type="radio" name="js-bookmark-edit-rating" value="2">2</input>
-            <input type="radio" name="js-bookmark-edit-rating" value="3">3</input>
-            <input type="radio" name="js-bookmark-edit-rating" value="4">4</input>
-            <input type="radio" name="js-bookmark-edit-rating" value="5">5</input>
-            <button class="bookmark-edit-submit js-bookmark-edit-submit">
-              <span class="button-label">Submit</span>
+            <p><textarea rows="4" cols="50" name="bookmark-edit-desc" class="js-bookmark-edit-desc">${bookmark.desc}</textarea></p>`;
+      for (let i=1;i < 6;i++) {
+        if ( bookmark.rating === i ) {
+          bookmarkHTML += `<input type="radio" name="js-bookmark-edit-rating" value="${i}" checked="checked">${i}</input>`;
+        } else {
+          bookmarkHTML += `<input type="radio" name="js-bookmark-edit-rating" value="${i}">${i}</input>`;
+        }
+      }
+      bookmarkHTML += 
+        `<button class="bookmark-edit-submit js-bookmark-edit-submit">
+            <span class="button-label">Submit</span>
             </button>
           </form>
-        </div>`;
-
+         </div>`;
     } else {
       bookmarkRatingStars = '<div class="rating-stars">';
       for (let i=0; i < parseInt(bookmark.rating, 10); i++) {
@@ -76,10 +90,6 @@ const bookmarkList = (function(){
       }
       bookmarkRatingStars += '</div>';
     }
-    // <button class="bookmark-edit js-bookmark-edit ${editBtnStatus}">
-    //   <button class="bookmark-edit js-bookmark-edit">
-    //   <span class="button-label">Edit</span>
-    // </button>
 
     return `
       <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
@@ -87,12 +97,6 @@ const bookmarkList = (function(){
         </div>
       </li>`;
   }
-
-  // <button class="bookmark-bookmark-toggle js-bookmark-toggle">
-  //   <span class="button-label">check</span>
-  // </button>
-
-
   
   function generateBookmarkString(bookmarkList) {
     const bookmarks = bookmarkList.map((bookmark) => generateBookmarkElement(bookmark));
@@ -111,17 +115,11 @@ const bookmarkList = (function(){
   function render() {
     renderError();
 
+    $('#js-add-bookmark-form').html(addNewBookmarkForm());
+
     // Filter bookmark list if store prop is true by bookmark.checked === false
     let bookmarks = [ ...store.bookmarks ];
-    if (store.hideCheckedBookmarks) {
-      bookmarks = bookmarks.filter(bookmark => !bookmark.checked);
-    }
-  
-    // Filter bookmark list if store prop `searchTerm` is not empty
-    if (store.searchTerm) {
-      bookmarks = bookmarks.filter(bookmark => bookmark.title.includes(store.searchTerm));
-    }
-  
+ 
     // render the bookmark list in the DOM
     console.log('`render` ran');
     const bookmarkListString = generateBookmarkString(bookmarks);
@@ -130,8 +128,16 @@ const bookmarkList = (function(){
     $('.js-bookmark-list').html(bookmarkListString);
   }
 
+  function handleNewBookmarkClick() {
+    $('#js-add-bookmark-form').on('click', '.js-add-bookmark', event => {
+      event.preventDefault();
+      store.addNewBookmark = true;
+      render();
+    });
+  }
+
   function handleNewBookmarkSubmit() {
-    $('#js-bookmark-list-form').submit(function (event) {
+    $('#js-add-bookmark-form').submit(function (event) {
       event.preventDefault();
       const newBookmarkDesc = $('.js-bookmark-list-desc').val();
       const newBookmarkRating = $('input:radio[name=js-bookmark-list-rating]:checked').val();
@@ -147,7 +153,9 @@ const bookmarkList = (function(){
       api.createBookmark(newBookmarkBody)
         .then((newBookmark) => {
           store.addBookmark(newBookmark);
+          store.addNewBookmark = false;
           render();
+          
         })
         .catch((err) => {
           store.setError(err.message);
@@ -256,6 +264,7 @@ const bookmarkList = (function(){
   }
   
   function bindEventListeners() {
+    handleNewBookmarkClick();
     handleNewBookmarkSubmit();
     handleBookmarkClicked();
     handleVisitSiteClicked();
